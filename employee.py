@@ -2,30 +2,52 @@
 """ENTER YOUR SOLUTION HERE!"""
 
 class Employee:
-    def __init__(self, name):
+    def __init__(self, name, contract_type, commission_type, hours=0, hourly_pay=0, monthly_salary=0, fixed_bonus=0, bonus_per_contract=0, contracts_landed=0):
         self.name = name
+        self.contract_type = contract_type
+        self.commission_type = commission_type
+        self.hours = hours
+        self.hourly_pay = hourly_pay
+        self.monthly_salary = monthly_salary
+        self.fixed_bonus = fixed_bonus
+        self.bonus_per_contract = bonus_per_contract
+        self.contracts_landed = contracts_landed
 
     def get_pay(self):
-        pass
+        pay = 0
+
+        if self.contract_type == "hourly":
+            pay += self.hours * self.hourly_pay
+        else:
+            pay += self.monthly_salary
+
+        if self.commission_type == "fixed":
+            pay += self.fixed_bonus
+        elif self.commission_type == "contract":
+            pay += self.contracts_landed * self.bonus_per_contract
+
+        return pay
 
     def __str__(self):
-        return self.name
+        contract_description = f"{self.name} works on a "
+        
+        if self.contract_type == "hourly":
+            contract_description += f"contract of {self.hours} hours at {self.hourly_pay}/hour"
+        else:
+            contract_description += f"monthly salary of {self.monthly_salary}"
+
+        if self.commission_type == "fixed":
+            contract_description += f" and receives a bonus commission of {self.fixed_bonus}"
+        elif self.commission_type == "contract":
+            contract_description += f" and receives a commission for {self.contracts_landed} contract(s) at {self.bonus_per_contract}/contract"
+
+        return f"{contract_description}. Their total pay is {self.get_pay()}."
 
 
-# Billie works on a monthly salary of 4000.  Their total pay is 4000.
-billie = Employee('Billie')
-
-# Charlie works on a contract of 100 hours at 25/hour.  Their total pay is 2500.
-charlie = Employee('Charlie')
-
-# Renee works on a monthly salary of 3000 and receives a commission for 4 contract(s) at 200/contract.  Their total pay is 3800.
-renee = Employee('Renee')
-
-# Jan works on a contract of 150 hours at 25/hour and receives a commission for 3 contract(s) at 220/contract.  Their total pay is 4410.
-jan = Employee('Jan')
-
-# Robbie works on a monthly salary of 2000 and receives a bonus commission of 1500.  Their total pay is 3500.
-robbie = Employee('Robbie')
-
-# Ariel works on a contract of 120 hours at 30/hour and receives a bonus commission of 600.  Their total pay is 4200.
-ariel = Employee('Ariel')
+# Examples
+billie = Employee('Billie', "Monthly", "None", monthly_salary=4000)
+charlie = Employee('Charlie', "hourly", "None", hours=100, hourly_pay=25)
+renee = Employee('Renee', "Monthly", "contract", monthly_salary=3000, bonus_per_contract=200, contracts_landed=4)
+jan = Employee('Jan', "hourly", "contract", hours=150, hourly_pay=25, bonus_per_contract=220, contracts_landed=3)
+robbie = Employee('Robbie', "Monthly", "fixed", monthly_salary=2000, fixed_bonus=1500)
+ariel = Employee('Ariel', "hourly", "fixed", hours=120, hourly_pay=30, fixed_bonus=600)
